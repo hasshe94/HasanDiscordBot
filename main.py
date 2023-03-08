@@ -18,14 +18,12 @@ advanced_attack = 40
 special_attack = 60
 
 
-   def __init__(self, name, hp, max_hp, attack, defense, xp, gold):
+   def __init__(self, name, hp, max_hp, attack, defense):
         self.name = name
         self.hp = hp
         self.max_hp = max_hp
         self.attack = attack
         self.defense = defense
-        self.xp = xp
-        self.gold = gold
 
     def fight(self, other):
         defense = min(other.defense, 19) # cap defense value
