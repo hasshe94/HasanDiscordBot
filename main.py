@@ -2,7 +2,7 @@ import discord
 import random
 from discord.ext import commands
 
-TOKEN = "MTA4MDk2MDkzOTI1MzMwNTQ2Nw.GVs656.qOtgFFHUCfQHmvlHektj-F-Ak_mzFYQXvZcamY"
+TOKEN = "MTA4MDk2MDkzOTI1MzMwNTQ2Nw.GBOIfp.bUt8Z38gitmINTYCaHk0JOqtkFNO-4lItRAVxw"
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -73,9 +73,9 @@ async def guide(ctx):
     To start simply type !start
     There are three types of attacks.
     You can use basic, advanced, or special attacks.
-    Basic attacks are commanded through !basic attack
-    Advanced attacks are commanded through !advanced attack
-    Speicial attacks are commanded through !special attack
+    Basic attacks are commanded through !attack basic
+    Advanced attacks are commanded through !attack advanced 
+    Speicial attacks are commanded through !attack special 
     Basic attacks do 20 damage.
     Advanced attacks do 40 damage and are available every other turn.
     Special attacks do 60 damage and are available every fourth turn.
