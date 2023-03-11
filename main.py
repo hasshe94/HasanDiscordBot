@@ -1,13 +1,16 @@
+#rpg bot code which allows the user to fight an enemy.
 import discord
 import random
 from discord.ext import commands
 
-TOKEN = "MTA4MDk2MDkzOTI1MzMwNTQ2Nw.GBOIfp.bUt8Z38gitmINTYCaHk0JOqtkFNO-4lItRAVxw"
+TOKEN = "MTA4MDk2MDkzOTI1MzMwNTQ2Nw.GI_Ali.dSs1C0Bluq3Pgss7yekU6DCgLq0FfMlNzvxFvk"
 
 intents = discord.Intents.default()
 intents.message_content = True
 
 client = commands.Bot(command_prefix="!", intents=intents)
+
+#variables
 
 user_hp = 100
 enemy_hp = 200
@@ -15,6 +18,7 @@ basic_attack = 20
 advanced_attack = 40
 special_attack = 60
 
+#start attack function
 @client.command()
 async def attack(ctx, attack_type):
     """
@@ -56,13 +60,19 @@ async def attack(ctx, attack_type):
 
     # Check if the game is over
     if user_hp <= 0:
-        await ctx.send("You lost the game!")
-        quit()
+        await ctx.send(f"You lost the game!\nThe Enemy is at {enemy_hp} hp. \n Enter !start game to play again")
+        user_hp = 0
+        enemy_hp = 0
     elif enemy_hp <= 0:
-        await ctx.send("You won the game!")
-        quit()
+        await ctx.send("You won the game!\nThe Enemy is dead. \n Enter!start game to play again")
+        user_hp = 0
+        enemy_hp = 0
+    elif user_hp > 0 and enemy_hp > 0:
+        await ctx.send("The game is not over yet! Keep fighting!")
 
+    
 
+#guide function
 @client.command()
 async def guide(ctx):
     """
@@ -84,7 +94,7 @@ async def guide(ctx):
     Good luck!
     """
     await ctx.send(message)
-
+#start function
 @client.command()
 async def start(ctx):
     """
