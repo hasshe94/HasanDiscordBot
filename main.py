@@ -2,7 +2,7 @@ import discord
 import random
 from discord.ext import commands
 
-TOKEN = "MTA4MDk2MDkzOTI1MzMwNTQ2Nw.GP4Q82.AXcL6YsznKuDJGjv2J4LOskOj72jXlY3-PZxZ4"
+TOKEN = "MTA4MDk2MDkzOTI1MzMwNTQ2Nw.GVs656.qOtgFFHUCfQHmvlHektj-F-Ak_mzFYQXvZcamY"
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -17,6 +17,9 @@ special_attack = 60
 
 @client.command()
 async def attack(ctx, attack_type):
+    """
+    Check the guide for attack information
+    """
     global user_hp
     global enemy_hp
 
@@ -67,13 +70,17 @@ async def guide(ctx):
     """
     message = """
     Welcome to the game!
-    Use the !attack command to attack the enemy.
+    To start simply type !start
+    There are three types of attacks.
     You can use basic, advanced, or special attacks.
+    Basic attacks are commanded through !basic attack
+    Advanced attacks are commanded through !advanced attack
+    Speicial attacks are commanded through !special attack
     Basic attacks do 20 damage.
     Advanced attacks do 40 damage and are available every other turn.
     Special attacks do 60 damage and are available every fourth turn.
-    The enemy will randomly attack you each turn.
-    You win the game by defeating the enemy before your health reaches 0.
+    The enemy will randomly attack you each turn you take with damage between 30 and 60 hp.
+    You win the game by defeating the enemy before your hp reaches 0.
     Good luck!
     """
     await ctx.send(message)
