@@ -2,7 +2,7 @@ import discord
 import random
 from discord.ext import commands
 
-TOKEN = "MTA4MDk2MDkzOTI1MzMwNTQ2Nw.Gyhwy0.bLsZxH7Nndp2WYqkwdKsaVC_wMHDB6DfAesFPY"
+TOKEN = "MTA4MDk2MDkzOTI1MzMwNTQ2Nw.GP4Q82.AXcL6YsznKuDJGjv2J4LOskOj72jXlY3-PZxZ4"
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -49,13 +49,15 @@ async def attack(ctx, attack_type):
     enemy_hp -= damage
 
     # Send a message with the results of the attack
-    await ctx.send(f"You dealt {damage} damage to the enemy! The enemy dealt {enemy_damage} damage to you.")
+    await ctx.send(f"You dealt {damage} damage to the enemy! The enemy dealt {enemy_damage} damage to you. \n user hp: {user_hp} \n enemy hp: {enemy_hp}")
 
     # Check if the game is over
     if user_hp <= 0:
         await ctx.send("You lost the game!")
+        quit()
     elif enemy_hp <= 0:
         await ctx.send("You won the game!")
+        quit()
 
 
 @client.command()
