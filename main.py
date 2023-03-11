@@ -2,37 +2,89 @@ import discord
 import random
 from discord.ext import commands
 
-TOKEN = "MTA4MDk2MDkzOTI1MzMwNTQ2Nw.GGOkWt.NQf-0xy1kFFMoh2Y8sFsGeCEJBvH5vvLd9RyVE"
+TOKEN = "MTA4MDk2MDkzOTI1MzMwNTQ2Nw.Gyhwy0.bLsZxH7Nndp2WYqkwdKsaVC_wMHDB6DfAesFPY"
 
 intents = discord.Intents.default()
 intents.message_content = True
 
-client = commands.Bot(command_prefix = "!" , intents = intents)
+client = commands.Bot(command_prefix="!", intents=intents)
 
-
-#variable#
 user_hp = 100
 enemy_hp = 200
 basic_attack = 20
 advanced_attack = 40
 special_attack = 60
 
+@client.command()
+async def attack(ctx, attack_type):
+    global user_hp
+    global enemy_hp
 
-   def __init__(self, name, hp, max_hp, attack, defense):
-        self.name = name
-        self.hp = hp
-        self.max_hp = max_hp
-        self.attack = attack
-        self.defense = defense
+    # Check if the user entered a valid attack type
+    if attack_type not in ["basic", "advanced", "special"]:
+        await ctx.send("Invalid attack type!")
+        return
 
-    def fight(self, other):
-        defense = min(other.defense, 19) # cap defense value
-        chance_to_hit = random.randint(0, 20-defense)
-        if chance_to_hit:
-            damage = self.attack
+    # Calculate the damage based on the attack type
+    if attack_type == "basic":
+        damage = basic_attack
+    elif attack_type == "advanced":
+        if ctx.command.called_count % 2 == 0:
+            damage = advanced_attack
         else:
-            damage = 0
+            await ctx.send("Advanced attack not available yet!")
+            return
+    elif attack_type == "special":
+        if ctx.command.called_count % 4 == 0:
+            damage = special_attack
+        else:
+            await ctx.send("Special attack not available yet!")
+            return
 
-        other.hp -= damage
+    # Calculate the enemy's attack damage and subtract it from the user's health
+    enemy_damage = random.randint(30, 60)
+    user_hp -= enemy_damage
 
-        return (self.attack, other.hp <= 0) #(damage, fatal)
+    # Subtract the damage from the enemy's health
+    enemy_hp -= damage
+
+    # Send a message with the results of the attack
+    await ctx.send(f"You dealt {damage} damage to the enemy! The enemy dealt {enemy_damage} damage to you.")
+
+    # Check if the game is over
+    if user_hp <= 0:
+        await ctx.send("You lost the game!")
+    elif enemy_hp <= 0:
+        await ctx.send("You won the game!")
+
+
+@client.command()
+async def guide(ctx):
+    """
+    Shows a help message with instructions on how to play the game.
+    """
+    message = """
+    Welcome to the game!
+    Use the !attack command to attack the enemy.
+    You can use basic, advanced, or special attacks.
+    Basic attacks do 20 damage.
+    Advanced attacks do 40 damage and are available every other turn.
+    Special attacks do 60 damage and are available every fourth turn.
+    The enemy will randomly attack you each turn.
+    You win the game by defeating the enemy before your health reaches 0.
+    Good luck!
+    """
+    await ctx.send(message)
+
+@client.command()
+async def start(ctx):
+    """
+    Starts the game by resetting the player and enemy health.
+    """
+    global user_hp
+    global enemy_hp
+    user_hp = 100
+    enemy_hp = 200
+    await ctx.send("Game started. Your health has been reset to 100, and the enemy's health has been reset to 200.")
+
+client.run(TOKEN)
