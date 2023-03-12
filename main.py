@@ -3,12 +3,13 @@ import discord
 import random
 from discord.ext import commands
 
-TOKEN = "MTA4MDk2MDkzOTI1MzMwNTQ2Nw.GU1yjv.jHYTYtSDxXjXFgY0qvzH5StXlLSRkiKJ1g8OMU"
+TOKEN = "MTA4MDk2MDkzOTI1MzMwNTQ2Nw.GyIXAB.F_BAdCKLnt2RPMv6tY18U-mO5cSs1JtIlaJzA4"
 
 intents = discord.Intents.default()
 intents.message_content = True
 
 client = commands.Bot(command_prefix="!", intents=intents)
+client.remove_command("help")
 
 #variables
 
@@ -17,9 +18,25 @@ enemy_hp = 200
 basic_attack = 20
 advanced_attack = 40
 special_attack = 60
-game_over = True
+game_over = False
 
-#start attack function
+
+#help command
+@client.command(pass_context = True)
+async def help(ctx):
+  author = ctx.message.author
+
+  embed = discord.Embed(
+    colour = discord.Colour.red()
+  )
+
+  embed.set_authour(name = 'Help')
+  embed.add_field(name ='. ping', value= 'Returns Pong!', inline=False)
+
+  await client.send_message(author, embed=embed)
+
+
+#start attack command
 @client.command()
 async def attack(ctx, attack_type : str):
     """
@@ -63,7 +80,7 @@ async def attack(ctx, attack_type : str):
     # Check if the game is over
     if user_hp <= 0:
         game_over = True
-        await ctx.send(f"You lost the game!\nThe Enemy is at {enemy_hp} hp. \n Enter !start game to play again")
+        await ctx.send(f"You lost the game!\nThe Enemy is still at {enemy_hp} hp. \n Enter !start game to play again")
       
     elif enemy_hp <= 0:
         game_over = True
@@ -75,7 +92,7 @@ async def attack(ctx, attack_type : str):
 
     
 
-#guide function
+#guide command
 @client.command()
 async def guide(ctx):
     """
@@ -97,7 +114,7 @@ async def guide(ctx):
     Good luck!
     """
     await ctx.send(message)
-#start function
+#start command
 @client.command()
 async def start(ctx):
     """
@@ -107,9 +124,7 @@ async def start(ctx):
     global enemy_hp
     user_hp = 100
     enemy_hp = 200
-    await ctx.send("Game started. Your health has been reset to 100, and the enemy's health has been reset to 200.\n Enter !help for help on the game.")
-
-
+    await ctx.send("Game started. Your health has been reset to 100, and the enemy's health has been reset to 200.\n Enter !help for if you are new to the game.")
 
 
   
