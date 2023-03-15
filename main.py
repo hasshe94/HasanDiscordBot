@@ -123,10 +123,11 @@ async def start(ctx):
 
 @client.command()
 async def guide(ctx):
+  """
+    Heals you between 40 and 60 hp can only be used every 2 attacks
+    
     """
-    Shows a help message with instructions on how to play the game.
-    """
-    message = """
+  message = """
     Welcome to the game!\n
     To start simply type !start.\n
     There are three types of attacks.\n
@@ -140,7 +141,13 @@ async def guide(ctx):
     The enemy will randomly attack you each turn you take with damage between 20 and 30 hp. You win the game by defeating the enemy before your hp reaches 0.\n
     Good luck!
     """
-    await ctx.send(message)
+  await ctx.send(message)
 
+
+#@client.command()
+#async def heal(ctx, heal: str):
+# """
+#  Heals you between 50 and 60 hp
+# """
 
 client.run(TOKEN)
