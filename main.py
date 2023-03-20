@@ -78,8 +78,14 @@ async def attack(ctx, attack_type: str):
     await ctx.send("Advanced attack not available yet!")
     return
 
+
   if attack_type == "special" and not game.special_available:
     await ctx.send("Special attack not available yet!")
+    return
+
+
+  if attack_type == "heal" and not game.heal_available:
+    await ctx.send("Heal not available yet!")
     return
 
   # Calculate the enemy's attack damage and subtract it from the user's health
@@ -98,6 +104,9 @@ async def attack(ctx, attack_type: str):
   game.turn_count += 1
   game.advanced_available = game.turn_count % 2 == 0
   game.special_available = game.turn_count % 4 == 0
+  game.heal_available = game.turn_count % 4 == 0
+
+
 
   # Check if the game is over
   if game.is_game_over():
@@ -143,11 +152,13 @@ async def guide(ctx):
     """
   await ctx.send(message)
 
-
-#@client.command()
-#async def heal(ctx, heal: str):
-# """
-#  Heals you between 50 and 60 hp
-# """
+#heal
+@client.command()
+async def heal(ctx, heal: str):
+  """
+Heals you between 50 and 60 hp
+  """
+  return random.randint(30,40)
+  game.user_hp = game.user_hp + random.randint
 
 client.run(TOKEN)
