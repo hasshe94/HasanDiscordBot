@@ -13,6 +13,8 @@ client = commands.Bot(command_prefix="!", intents=intents)
 
 # define the RPGGame class to store game-related variables and methods
 class RPGGame:
+  def calculate_heal(self):
+    return random.randint(40, 50)
 
   def __init__(self):
     self.user_hp = 100
@@ -25,8 +27,9 @@ class RPGGame:
     self.special_available = False
     self.turn_count = 0
 
+
   def calculate_enemy_damage(self):
-    return random.randint(20, 30)
+    return random.randint(30, 50)
 
   def calculate_player_damage(self, attack_type):
     if attack_type == "basic":
@@ -54,6 +57,7 @@ class RPGGame:
     self.game_over = False
     self.advanced_available = False
     self.special_available = False
+    self.heal_available = False
     self.turn_count = 0
 
 
@@ -104,7 +108,7 @@ async def attack(ctx, attack_type: str):
   game.turn_count += 1
   game.advanced_available = game.turn_count % 2 == 0
   game.special_available = game.turn_count % 4 == 0
-  game.heal_available = game.turn_count % 4 == 0
+  game.heal_available = game.turn_count % 3 == 0
 
 
 
@@ -128,12 +132,14 @@ async def start(ctx):
   await ctx.send(
     "Game started. Your health has been reset to 100, and the enemy's health has been reset to 200.\n Enter !help for if you are new to the game."
   )
+  game_start = True
+
 
 
 @client.command()
 async def guide(ctx):
   """
-    Heals you between 40 and 60 hp can only be used every 2 attacks
+    Total Explanation of the game and how to play.
     
     """
   message = """
@@ -154,11 +160,18 @@ async def guide(ctx):
 
 #heal
 @client.command()
-async def heal(ctx, heal: str):
-  """
-Heals you between 50 and 60 hp
-  """
-  return random.randint(30,40)
-  game.user_hp = game.user_hp + random.randint
+async def heal(ctx):
+    """
+    Heals you between 40 and 50 hp
+    """
+    heal_amount = game.calculate_heal()
+    game.user_hp += heal_amount
+    enemy_damage = game.calculate_enemy_damage()
+    game.user_hp -= enemy_damage
+    await ctx.send(f"You healed yourself by {heal_amount}! The enemy dealt {enemy_damage} damage to you. \n user hp: {game.user_hp} \n enemy hp: {game.enemy_hp}")
+
+    
+
+
 
 client.run(TOKEN)
