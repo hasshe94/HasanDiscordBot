@@ -18,24 +18,18 @@ class RPGGame:
   def __init__(self):
     self.user_hp = 100
     self.enemy_hp = 200
-    self.basic_attack = 20
-    self.advanced_attack = 40
-    self.special_attack = 60
+    self.attack_damage = {"basic": 20, "advanced": 40, "special": 60}
     self.game_over = False
     self.advanced_available = False
     self.special_available = False
+    self.heal_available = False
     self.turn_count = 0
 
   def calculate_enemy_damage(self):
     return random.randint(30, 50)
 
   def calculate_player_damage(self, attack_type):
-    if attack_type == "basic":
-      return self.basic_attack
-    elif attack_type == "advanced":
-      return self.advanced_attack
-    elif attack_type == "special":
-      return self.special_attack
+    return self.attack_damage[attack_type]
 
   def is_game_over(self):
     return self.user_hp <= 0 or self.enemy_hp <= 0
@@ -81,7 +75,6 @@ async def attack(ctx, attack_type: str):
   if attack_type == "special" and not game.special_available:
     await ctx.send("Special attack not available yet!")
     return
-
 
   if attack_type == "heal" and not game.heal_available:
     await ctx.send("Heal not available yet!")
