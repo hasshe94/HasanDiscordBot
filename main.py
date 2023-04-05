@@ -16,8 +16,8 @@ class RPGGame:
     return random.randint(40, 50)
 
   def __init__(self):
-    self.user_hp = 100
-    self.enemy_hp = 200
+    self.user_hp = 300
+    self.enemy_hp = 300
     self.attack_damage = {"basic": 20, "advanced": 40, "special": 60}
     self.game_over = False
     self.advanced_available = False
@@ -26,7 +26,7 @@ class RPGGame:
     self.turn_count = 0
 
   def calculate_enemy_damage(self):
-    return random.randint(30, 50)
+    return random.randint(20, 40)
 
   def calculate_player_damage(self, attack_type):
     return self.attack_damage[attack_type]
@@ -98,13 +98,28 @@ async def attack(ctx, attack_type: str):
   game.special_available = game.turn_count % 4 == 0
   game.heal_available = game.turn_count % 3 == 0
 
-  # Check if the game is over
-  if game.is_game_over():
-    game.game_over = True
+@client.command(name="start")
+async def start_game(ctx):
+  game = Game()
+  await ctx.send("A new game has started! Your health is 100. Enemy's health is 100.")
+
+  # run the game logic in a while loop until the game is over
+  while not game.game_over:
+    # prompt the user to choose an attack
+    await ctx.send("Choose your attack: basic, advanced, special, or heal")
+
+    # wait for the user's response
+    attack_type = await client.wait_for("message")
+
+    # simulate the attack
+    await attack(ctx, attack_type.content)
+    
+    # check if the user has lost the game
     if game.get_game_status() == "lost":
       await ctx.send(
         f"You lost the game!\nThe Enemy is still at {game.enemy_hp}. Enter !start game to play again"
       )
+      break
 
 #start command
 @client.command()
