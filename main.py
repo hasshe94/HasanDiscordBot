@@ -98,10 +98,14 @@ async def attack(ctx, attack_type: str):
   game.special_available = game.turn_count % 4 == 0
   game.heal_available = game.turn_count % 3 == 0
 
-@client.command(name="start")
-async def start_game(ctx):
-  game = Game()
-  await ctx.send("A new game has started! Your health is 100. Enemy's health is 100.")
+  # Check if the game is over
+  if game.is_game_over():
+    game.game_over = True
+    if game.get_game_status() == "lost":
+      await ctx.send(
+        f"You lost the game!\nThe Enemy is still at {game.enemy_hp}. Enter !start game to play again"
+      )
+    return # exit the function if the game is over
 
   # run the game logic in a while loop until the game is over
   while not game.game_over:
