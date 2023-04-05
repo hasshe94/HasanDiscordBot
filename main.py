@@ -27,11 +27,12 @@ class RPGGame:
     self.heal_available = False
     self.turn_count = 0
 
-    def calculate_enemy_damage(self):
-      enemy_damage = random.randint(30, 40)
-      if enemy_damage < 33:
-        self.attack_damage["basic"] = 30
-    return enemy_damage
+async def calculate_enemy_damage(self, ctx):
+  enemy_damage = random.randint(30, 40)
+  if enemy_damage < 33:
+      self.attack_damage["basic"] += 5
+      await ctx.send("The enemy's attack was weak! You have capitalized and your basic attack has increased by +5   damage!")
+  return enemy_damage
 
 
 
