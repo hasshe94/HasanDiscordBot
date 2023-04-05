@@ -27,8 +27,12 @@ class RPGGame:
     self.heal_available = False
     self.turn_count = 0
 
-  def calculate_enemy_damage(self):
-    return random.randint(30, 40)
+    def calculate_enemy_damage(self):
+      enemy_damage = random.randint(30, 40)
+      if enemy_damage < 33:
+        self.attack_damage["basic"] = 30
+    return enemy_damage
+
 
 
 
