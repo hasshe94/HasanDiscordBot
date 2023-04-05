@@ -10,14 +10,16 @@ intents.message_content = True
 
 client = commands.Bot(command_prefix="!", intents=intents)
 
+
 # define the RPGGame class to store game-related variables and methods
 class RPGGame:
+
   def calculate_heal(self):
-    return random.randint(40, 50)
+    return random.randint(80, 110)
 
   def __init__(self):
-    self.user_hp = 300
-    self.enemy_hp = 300
+    self.user_hp = 100
+    self.enemy_hp = 200
     self.attack_damage = {"basic": 20, "advanced": 40, "special": 60}
     self.game_over = False
     self.advanced_available = False
@@ -26,7 +28,7 @@ class RPGGame:
     self.turn_count = 0
 
   def calculate_enemy_damage(self):
-    return random.randint(20, 40)
+    return random.randint(30, 40)
 
   def calculate_player_damage(self, attack_type):
     return self.attack_damage[attack_type]
@@ -44,15 +46,17 @@ class RPGGame:
       return "playing"
 
   def reset_game(self):
-    self.user_hp = 100
-    self.enemy_hp = 200
+    self.user_hp = 300
+    self.enemy_hp = 300
     self.game_over = False
     self.advanced_available = False
     self.special_available = False
     self.heal_available = False
     self.turn_count = 0
 
+
 game = RPGGame()
+
 
 @client.command()
 async def attack(ctx, attack_type: str):
@@ -105,25 +109,7 @@ async def attack(ctx, attack_type: str):
       await ctx.send(
         f"You lost the game!\nThe Enemy is still at {game.enemy_hp}. Enter !start game to play again"
       )
-    return # exit the function if the game is over
 
-  # run the game logic in a while loop until the game is over
-  while not game.game_over:
-    # prompt the user to choose an attack
-    await ctx.send("Choose your attack: basic, advanced, special, or heal")
-
-    # wait for the user's response
-    attack_type = await client.wait_for("message")
-
-    # simulate the attack
-    await attack(ctx, attack_type.content)
-    
-    # check if the user has lost the game
-    if game.get_game_status() == "lost":
-      await ctx.send(
-        f"You lost the game!\nThe Enemy is still at {game.enemy_hp}. Enter !start game to play again"
-      )
-      break
 
 #start command
 @client.command()
@@ -131,11 +117,12 @@ async def start(ctx):
   """
     Starts the game by resetting the player and enemy health.
     """
-  game.user_hp = 100
-  game.enemy_hp = 200
+  game.user_hp = 300
+  game.enemy_hp = 300
   await ctx.send(
-    "Game started. Your health has been reset to 100, and the enemy's health has been reset to 200.\n Enter !help for if you are new to the game."
+    "Game started. Your health has been reset to 300, and the enemy's health has been reset to 300.\n Enter !help for if you are new to the game."
   )
+
 
 @client.command()
 async def guide(ctx):
@@ -154,22 +141,26 @@ async def guide(ctx):
     Basic attacks do 20 damage.\n
     Advanced attacks do 40 damage and are available every second turn.\n
     Special attacks do 60 damage and are available every fourth turn.\n
-    The heal command heals the player for a random amount between 40 and 50 hp and is available every 3rd turn.\n
-    The enemy will randomly attack you each turn you take with damage between 20 and 30 hp. You win the game by defeating the enemy before your hp reaches 0.\n
+    The heal command heals the player for a random amount between 80 and 110 hp and is available every 3rd turn.\n
+    The enemy will randomly attack you each turn you take with damage between 30 and 40 hp. You win the game by defeating the enemy before your hp reaches 0.\n
     Good luck!
     """
   await ctx.send(message)
 
+
 #heal
 @client.command()
 async def heal(ctx):
+  """
+    Heals you between 80 and 110 hp
     """
-    Heals you between 40 and 50 hp
-    """
-    heal_amount = game.calculate_heal()
-    game.user_hp += heal_amount
-    enemy_damage = game.calculate_enemy_damage()
-    game.user_hp -= enemy_damage
-    await ctx.send(f"You healed yourself by {heal_amount}! The enemy dealt {enemy_damage} damage to you. \n user hp: {game.user_hp} \n enemy hp: {game.enemy_hp}")
+  heal_amount = game.calculate_heal()
+  game.user_hp += heal_amount
+  enemy_damage = game.calculate_enemy_damage()
+  game.user_hp -= enemy_damage
+  await ctx.send(
+    f"You healed yourself by {heal_amount}! The enemy dealt {enemy_damage} damage to you. \n user hp: {game.user_hp} \n enemy hp: {game.enemy_hp}"
+  )
+
 
 client.run(TOKEN)
