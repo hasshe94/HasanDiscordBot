@@ -106,6 +106,25 @@ async def attack(ctx, attack_type: str):
     f"You dealt {damage} damage to the enemy! The enemy dealt {enemy_damage} damage to you. \n user hp: {game.user_hp} \n enemy hp: {game.enemy_hp}"
   )
 
+
+  # Update game status
+  game.turn_count += 1
+  game.advanced_available = game.turn_count % 2 == 0
+  game.special_available = game.turn_count % 4 == 0
+  game.heal_available = game.turn_count % 3 == 0
+
+  # Check if the game is over
+  if game.is_game_over():
+    game.game_over = True
+    if game.get_game_status() == "lost":
+      await ctx.send(
+        f"You lost the game!\nThe Enemy is still at {game.enemy_hp} HP! Enter !start game to play again!"
+      )
+    elif game.get_game_status() == "won":
+      await ctx.send(
+        f"You have won the game! Your enemy has been slayed while you are still {game.user_hp} HP!"
+      )
+
 @client.command()
 async def heal(ctx):
   """
@@ -127,24 +146,6 @@ async def heal(ctx):
   await ctx.send(
     f"You healed {heal_amount} HP! The enemy dealt {enemy_damage} damage to you. \n user hp: {game.user_hp} \n enemy hp: {game.enemy_hp}"
   )
-
-  # Update game status
-  game.turn_count += 1
-  game.advanced_available = game.turn_count % 2 == 0
-  game.special_available = game.turn_count % 4 == 0
-  game.heal_available = game.turn_count % 3 == 0
-
-  # Check if the game is over
-  if game.is_game_over():
-    game.game_over = True
-    if game.get_game_status() == "lost":
-      await ctx.send(
-        f"You lost the game!\nThe Enemy is still at {game.enemy_hp}. Enter !start game to play again"
-      )
-    elif game.get_game_status() == "won":
-      await ctx.send(
-        f"You have won the game! Your enemy has been slayed while you are still {game.user_hp}"
-      )
 
 
 #start command
