@@ -29,6 +29,11 @@ class RPGGame:
 
   def calculate_enemy_damage(self):
     return random.randint(30, 40)
+    if  calculate_enemy_damage < 35:
+        user["basic"] = 30
+        return f"The enemy attacked weak, Your basic attack now does 30 damage!"
+    return 
+
 
   def calculate_player_damage(self, attack_type):
     return self.attack_damage[attack_type]
@@ -142,7 +147,9 @@ async def guide(ctx):
     Advanced attacks do 40 damage and are available every second turn.\n
     Special attacks do 60 damage and are available every fourth turn.\n
     The heal command heals the player for a random amount between 80 and 110 hp and is available every 3rd turn.\n
-    The enemy will randomly attack you each turn you take with damage between 30 and 40 hp. You win the game by defeating the enemy before your hp reaches 0.\n
+    The enemy will randomly attack you each turn you take with damage between 30 and 40 hp.
+    If the enemy attack goes below 35 your basic attack increases to 30.\n
+    You win the game by defeating the enemy before your hp reaches 0.\n
     Good luck!
     """
   await ctx.send(message)
