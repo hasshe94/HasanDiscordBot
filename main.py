@@ -18,8 +18,8 @@ class RPGGame:
     return random.randint(80, 110)
 
   def __init__(self):
-    self.user_hp = 100
-    self.enemy_hp = 200
+    self.user_hp = 300
+    self.enemy_hp = 300
     self.attack_damage = {"basic": 20, "advanced": 40, "special": 60}
     self.game_over = False
     self.advanced_available = False
@@ -29,10 +29,8 @@ class RPGGame:
 
   def calculate_enemy_damage(self):
     return random.randint(30, 40)
-    if  calculate_enemy_damage < 35:
-        user["basic"] = 30
-        return f"The enemy attacked weak, Your basic attack now does 30 damage!"
-    return 
+
+
 
 
   def calculate_player_damage(self, attack_type):
@@ -74,6 +72,13 @@ async def attack(ctx, attack_type: str):
       "Invalid attack type! Enter !guide to learn how to play the game")
     return
 
+  # Check if the game is over
+  if game.is_game_over():
+    await ctx.send(
+      "The game is over. Enter !start game to play again"
+    )
+    return
+
   # Calculate the damage based on the attack type
   damage = game.calculate_player_damage(attack_type)
 
@@ -101,6 +106,28 @@ async def attack(ctx, attack_type: str):
     f"You dealt {damage} damage to the enemy! The enemy dealt {enemy_damage} damage to you. \n user hp: {game.user_hp} \n enemy hp: {game.enemy_hp}"
   )
 
+@client.command()
+async def heal(ctx):
+  """
+    Heals you between 80 and 110 hp
+    """
+  if not game.heal_available:
+    await ctx.send("Heal not available yet!")
+    return
+
+  # Calculate the heal amount and add it to the user's health
+  heal_amount = game.calculate_heal()
+  game.user_hp += heal_amount
+
+  # Calculate the enemy's attack damage and subtract it from the user's health
+  enemy_damage = game.calculate_enemy_damage()
+  game.user_hp -= enemy_damage
+
+  # Send a message with the results of the heal
+  await ctx.send(
+    f"You healed {heal_amount} HP! The enemy dealt {enemy_damage} damage to you. \n user hp: {game.user_hp} \n enemy hp: {game.enemy_hp}"
+  )
+
   # Update game status
   game.turn_count += 1
   game.advanced_available = game.turn_count % 2 == 0
@@ -113,6 +140,10 @@ async def attack(ctx, attack_type: str):
     if game.get_game_status() == "lost":
       await ctx.send(
         f"You lost the game!\nThe Enemy is still at {game.enemy_hp}. Enter !start game to play again"
+      )
+    elif game.get_game_status() == "won":
+      await ctx.send(
+        f"You have won the game! Your enemy has been slayed while you are still {game.user_hp}"
       )
 
 
@@ -155,19 +186,6 @@ async def guide(ctx):
   await ctx.send(message)
 
 
-#heal
-@client.command()
-async def heal(ctx):
-  """
-    Heals you between 80 and 110 hp
-    """
-  heal_amount = game.calculate_heal()
-  game.user_hp += heal_amount
-  enemy_damage = game.calculate_enemy_damage()
-  game.user_hp -= enemy_damage
-  await ctx.send(
-    f"You healed yourself by {heal_amount}! The enemy dealt {enemy_damage} damage to you. \n user hp: {game.user_hp} \n enemy hp: {game.enemy_hp}"
-  )
 
 
 client.run(TOKEN)
