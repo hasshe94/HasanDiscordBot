@@ -1,22 +1,27 @@
+# Import necessary modules
 import os
 import discord
 import random
 from discord.ext import commands
 
+# Retrieve token from environment variable
 TOKEN = os.environ['TOKEN']
 
+# Define Discord intents
 intents = discord.Intents.default()
 intents.message_content = True
 
+# Create Discord bot instance
 client = commands.Bot(command_prefix="!", intents=intents)
 
-
-# define the RPGGame class to store game-related variables and methods
+# Define the RPGGame class to store game-related variables and methods
 class RPGGame:
-
+  
+  # Method to calculate heal amount
   def calculate_heal(self):
     return random.randint(80, 110)
 
+  # Constructor method to initialize game variables
   def __init__(self):
     self.user_hp = 300
     self.enemy_hp = 300
@@ -27,18 +32,19 @@ class RPGGame:
     self.heal_available = False
     self.turn_count = 0
 
+  # Method to calculate enemy damage
   def calculate_enemy_damage(self):
     return random.randint(30, 40)
 
-
-
-
+  # Method to calculate player damage
   def calculate_player_damage(self, attack_type):
     return self.attack_damage[attack_type]
 
+  # Method to check if the game is over
   def is_game_over(self):
     return self.user_hp <= 0 or self.enemy_hp <= 0
 
+  # Method to get the current game status
   def get_game_status(self):
     if self.is_game_over():
       if self.user_hp <= 0:
@@ -48,6 +54,7 @@ class RPGGame:
     else:
       return "playing"
 
+  # Method to reset the game
   def reset_game(self):
     self.user_hp = 300
     self.enemy_hp = 300
@@ -57,31 +64,30 @@ class RPGGame:
     self.heal_available = False
     self.turn_count = 0
 
-
+# Create a new instance of the RPGGame class
 game = RPGGame()
 
-
+# Command to handle player attacks
 @client.command()
 async def attack(ctx, attack_type: str):
   """
-    Check the guide for attack information
-    """
+  Check the guide for attack information
+  """
+
   # Check if the user entered a valid attack type
   while attack_type not in ["basic", "advanced", "special"]:
-    await ctx.send(
-      "Invalid attack type! Enter !guide to learn how to play the game")
+    await ctx.send("Invalid attack type! Enter !guide to learn how to play the game")
     return
 
   # Check if the game is over
   if game.is_game_over():
-    await ctx.send(
-      "The game is over. Enter !start game to play again"
-    )
+    await ctx.send("The game is over. Enter !start game to play again")
     return
 
   # Calculate the damage based on the attack type
   damage = game.calculate_player_damage(attack_type)
 
+  # Check if the selected attack type is available
   if attack_type == "advanced" and not game.advanced_available:
     await ctx.send("Advanced attack not available yet!")
     return
@@ -95,6 +101,9 @@ async def attack(ctx, attack_type: str):
     return
 
   # Calculate the enemy's attack damage and subtract it from the user's health
+  enemy_damage = game.calculate_enemy_damage()
+  
+  # If the enemy's attack damage is less than 33, increase the user's basic attack damage by 5
   enemy_damage = game.calculate_enemy_damage()
   if enemy_damage < 33:
     game.attack_damage["basic"] += 5
@@ -128,6 +137,7 @@ async def attack(ctx, attack_type: str):
         f"You have won the game! Your enemy has been slayed while you are still {game.user_hp} HP!"
       )
 
+#heal command
 @client.command()
 async def heal(ctx):
   """
@@ -156,13 +166,14 @@ async def start(ctx):
   """
     Starts the game by resetting the player and enemy health.
     """
+  #resets user health
   game.user_hp = 300
   game.enemy_hp = 300
   await ctx.send(
     "Game started! Your health has been reset to 300, and the enemy's health has been reset to 300.\n Enter !help for if you are new to the game."
   )
 
-
+#help command
 @client.command()
 async def guide(ctx):
   """
