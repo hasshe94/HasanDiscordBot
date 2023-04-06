@@ -113,7 +113,7 @@ async def attack(ctx, attack_type: str):
   # Update game status
   game.turn_count += 1
   game.advanced_available = game.turn_count % 2 == 0
-  game.special_available = game.turn_count % 4 == 0
+  game.special_available = game.turn_count % 3 == 0
   game.heal_available = game.turn_count % 3 == 0
 
   # Check if the game is over
