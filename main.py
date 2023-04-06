@@ -150,7 +150,6 @@ async def heal(ctx):
     f"You healed {heal_amount} HP! The enemy dealt {enemy_damage} damage to you. \n user hp: {game.user_hp} \n enemy hp: {game.enemy_hp}"
   )
 
-
 #start command
 @client.command()
 async def start(ctx):
@@ -160,7 +159,7 @@ async def start(ctx):
   game.user_hp = 300
   game.enemy_hp = 300
   await ctx.send(
-    "Game started. Your health has been reset to 300, and the enemy's health has been reset to 300.\n Enter !help for if you are new to the game."
+    "Game started! Your health has been reset to 300, and the enemy's health has been reset to 300.\n Enter !help for if you are new to the game."
   )
 
 
@@ -178,12 +177,12 @@ async def guide(ctx):
     Basic attacks are commanded through !attack basic.\n
     Advanced attacks are commanded through !attack advanced.\n
     Speicial attacks are commanded through !attack special.\n
-    Basic attacks do 20 damage.\n
-    Advanced attacks do 40 damage and are available every second turn.\n
-    Special attacks do 60 damage and are available every third turn.\n
-    The heal command heals the player for a random amount between 80 and 110 hp and is available every third turn.\n
+    Basic attacks do 20 damage and are available every turn.\n
+    Advanced attacks do 40 damage and are available after two turns.\n
+    Special attacks do 60 damage and are available after three turns.\n
+    The heal command heals the player for a random amount between 80 and 110 hp and is available after three turns.\n
     The enemy will randomly attack you each turn you take with damage between 30 and 40 hp.
-    If the enemy attack goes below 35 your basic attack increases by plus 5 damage.\n
+    If the enemy attack goes below 33 your basic attack increases by plus 5 damage.\n
     You win the game by defeating the enemy before your hp reaches 0.\n
     Good luck!
     """
