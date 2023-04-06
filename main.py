@@ -105,7 +105,7 @@ async def attack(ctx, attack_type: str):
   
   # If the enemy's attack damage is less than 33, increase the user's basic attack damage by 5
   enemy_damage = game.calculate_enemy_damage()
-  if enemy_damage < 33:
+  if enemy_damage <= 33:
     game.attack_damage["basic"] += 5
     await ctx.send("The enemy's attack was weak! You have capitalized and your basic attack has increased by +5 damage!")
   game.user_hp -= enemy_damage
@@ -193,7 +193,7 @@ async def guide(ctx):
     Special attacks do 60 damage and are available after three turns.\n
     The heal command heals the player for a random amount between 80 and 110 hp and is available after three turns.\n
     The enemy will randomly attack you each turn you take with damage between 30 and 40 hp.
-    If the enemy attack goes below 33 your basic attack increases by plus 5 damage.\n
+    If the enemy attack goes below or equal to 33 your basic attack increases by plus 5 damage.\n
     You win the game by defeating the enemy before your hp reaches 0.\n
     Good luck!
     """
