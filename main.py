@@ -67,7 +67,7 @@ async def attack(ctx, attack_type: str):
     Check the guide for attack information
     """
   # Check if the user entered a valid attack type
-  if attack_type not in ["basic", "advanced", "special"]:
+  while attack_type not in ["basic", "advanced", "special"]:
     await ctx.send(
       "Invalid attack type! Enter !guide to learn how to play the game")
     return
