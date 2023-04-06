@@ -180,10 +180,10 @@ async def guide(ctx):
     Speicial attacks are commanded through !attack special.\n
     Basic attacks do 20 damage.\n
     Advanced attacks do 40 damage and are available every second turn.\n
-    Special attacks do 60 damage and are available every fourth turn.\n
-    The heal command heals the player for a random amount between 80 and 110 hp and is available every 3rd turn.\n
+    Special attacks do 60 damage and are available every third turn.\n
+    The heal command heals the player for a random amount between 80 and 110 hp and is available every third turn.\n
     The enemy will randomly attack you each turn you take with damage between 30 and 40 hp.
-    If the enemy attack goes below 35 your basic attack increases to 30.\n
+    If the enemy attack goes below 35 your basic attack increases by plus 5 damage.\n
     You win the game by defeating the enemy before your hp reaches 0.\n
     Good luck!
     """
