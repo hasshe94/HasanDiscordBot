@@ -171,7 +171,7 @@ async def start(ctx):
   game.enemy_hp = 300
   game.attack_damage["basic"] = 20
   await ctx.send(
-    "Game started! Your health has been reset to 300, and the enemy's health has been reset to 300.\n Enter !help for if you are new to the game."
+    "Game started! Your health has been reset to 300, and the enemy's health has also been reset to 300.\n Enter !help if you are new to the game."
   )
 
 #help command
